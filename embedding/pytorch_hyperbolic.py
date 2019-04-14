@@ -23,10 +23,10 @@ sys.path.insert(0, root_dir)
 import utils.load_graph as load_graph
 import utils.vis as vis
 import utils.distortions as dis
-import graph_helpers as gh
-import mds_warmstart
-from hyperbolic_models import ProductEmbedding
-from hyperbolic_parameter import RParameter
+import embedding.graph_helpers as gh
+import embedding.mds_warmstart
+from embedding.hyperbolic_models import ProductEmbedding
+from embedding.hyperbolic_parameter import RParameter
 
 
 # This describes a hyperbolic optimizer in Pytorch. It requires two modifications:
@@ -388,7 +388,7 @@ def learn(dataset, dim=2, hyp=1, edim=1, euc=0, sdim=1, sph=0, scale=1., riemann
             m_init = torch.DoubleTensor(ws_data[:,range(ws_data.shape[1]-1)])
         elif use_hmds:
             # m_init = torch.DoubleTensor(mds_warmstart.get_normalized_hyperbolic(mds_warmstart.get_model(dataset,dim,scale)[1]))
-            m_init = torch.DoubleTensor(mds_warmstart.get_model(dataset,dim,scale)[1])
+            m_init = torch.DoubleTensor(embedding.mds_warmstart.get_model(dataset,dim,scale)[1])
 
         logging.info(f"\t Warmstarting? {warm_start} {m_init.size() if warm_start else None} {G.order()}")
         initial_scale = z.dataset.max_dist / 3.0
@@ -441,14 +441,14 @@ def learn(dataset, dim=2, hyp=1, edim=1, euc=0, sdim=1, sph=0, scale=1., riemann
     lr_burn_in = torch.optim.lr_scheduler.MultiStepLR(opt, milestones=[burn_in], gamma=10)
     # lr_decay = torch.optim.lr_scheduler.StepLR(opt, decay_length, decay_step) #TODO reconcile multiple LR schedulers
     if use_yellowfin:
-        from yellowfin import YFOptimizer
+        from embedding.yellowfin import YFOptimizer
         opt = YFOptimizer(model_params)
 
     if use_adagrad:
         opt = torch.optim.Adagrad(model_params)
 
     if use_svrg:
-        from svrg import SVRG
+        from embedding.svrg import SVRG
         base_opt = torch.optim.Adagrad if use_adagrad else torch.optim.SGD
         opt      = SVRG(m.parameters(), lr=learning_rate, T=T, data_loader=z, opt=base_opt)
         # TODO add ability for SVRG to take parameter groups

@@ -2,7 +2,7 @@ import numpy as np
 import torch
 from torch import nn
 
-from hyperbolic_parameter import PoincareParameter, EuclideanParameter, SphericalParameter, HyperboloidParameter
+from embedding.hyperbolic_parameter import PoincareParameter, EuclideanParameter, SphericalParameter, HyperboloidParameter
 import logging
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
