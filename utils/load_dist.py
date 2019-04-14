@@ -12,8 +12,8 @@ import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
-sys.path.insert(0, parentdir+"/pytorch")
-import pytorch.hyperbolic_models
+sys.path.insert(0, parentdir+"/embedding")
+import embedding.hyperbolic_models
 
 def compute_row(i, adj_mat): 
     return csg.dijkstra(adj_mat, indices=[i], unweighted=True, directed=False)
@@ -34,7 +34,7 @@ def load_dist_mat(file):
     return pickle.load(open(file,"rb"))
 
 def unwrap(x):
-    """ Extract the numbers from (sequences of) pytorch tensors """
+    """ Extract the numbers from (sequences of) embedding tensors """
     if isinstance(x, list) : return [unwrap(u) for u in x]
     if isinstance(x, tuple): return tuple([unwrap(u) for u in list(x)])
     return x.detach().cpu().numpy()

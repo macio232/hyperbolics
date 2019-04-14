@@ -5,7 +5,7 @@ from sklearn.manifold import Isomap
 import utils.distortions as dis
 import utils.load_graph as load_graph
 
-module_path = os.path.abspath(os.path.join('./pytorch'))
+module_path = os.path.abspath(os.path.join('./embedding'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 

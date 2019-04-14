@@ -89,7 +89,7 @@ def run_pytorch(run_name, datasets, epochs, batch_size, warm_start=False, comb=F
             param += ['--warm-start', f"{run_name}/comb_embeddings/{dataset}.r{rank}.p{precision}.emb"]
         params.append(" ".join(param))
 
-    cmd = " ".join([ 'CUDA_VISIBLE_DEVICES=0', 'python', 'pytorch/pytorch_hyperbolic.py', 'learn' ])
+    cmd = " ".join([ 'CUDA_VISIBLE_DEVICES=0', 'python', 'embedding/pytorch_hyperbolic.py', 'learn' ])
     # print(*[f'"{cmd} {p}"' for p in params])
     # subprocess.run(['parallel',
     #         ':::',

@@ -83,7 +83,7 @@ lrs = [.001, .003, .01]
 
 burn_ins = [0]
 
-# CUDA_VISIBLE_DEVICES=1 python pytorch/pytorch_hyperbolic.py learn data/edges/synthetic/sierp-C50-2.edges --batch-size 65536 -d 50 --hyp 0 --euc 0 --edim 50 --sph 1 --sdim 51 -l 100.0 --epochs 1000 --checkpoint-freq 100 --resample-freq 500 -g --subsample 1024 --riemann --log-name C50-2.S50.log
+# CUDA_VISIBLE_DEVICES=1 python embedding/pytorch_hyperbolic.py learn data/edges/synthetic/sierp-C50-2.edges --batch-size 65536 -d 50 --hyp 0 --euc 0 --edim 50 --sph 1 --sdim 51 -l 100.0 --epochs 1000 --checkpoint-freq 100 --resample-freq 500 -g --subsample 1024 --riemann --log-name C50-2.S50.log
 
 def run_pytorch(run_name, gpus, gpc, epochs, batch_size):
     params = []
@@ -135,7 +135,7 @@ def run_pytorch(run_name, gpus, gpc, epochs, batch_size):
 
     cmds = []
     for i in range(gpus):
-        header = " ".join([ 'CUDA_VISIBLE_DEVICES='+str(i%gpc), 'python', 'pytorch/pytorch_hyperbolic.py', 'learn' ])
+        header = " ".join([ 'CUDA_VISIBLE_DEVICES='+str(i%gpc), 'python', 'embedding/pytorch_hyperbolic.py', 'learn' ])
         cmds = [f'{header} {p}' for p in params[i::gpus]]
         with open(f"{run_name}/cmds{i}.sh", "w") as cmd_log:
             cmd_log.writelines('\n'.join(cmds))
